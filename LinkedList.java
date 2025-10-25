@@ -49,12 +49,16 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public void insertAtTail(T data) {
 		/* TODO: Implement this method */
-        if (tail == null) {
-            ListNode<T> newNode = new ListNode<>(data);
+        ListNode<T> newNode = new ListNode<>(data);
+        if (size == 0) {
+            head = newNode;
             tail = newNode;
         } else {
-            ListNode<T> newNode = new ListNode<>(data);
             tail.next = newNode;
+            newNode.prev = tail;
+            newNode.next = null;
+            tail = newNode;
+
         }
         size++;
         
@@ -67,32 +71,16 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public void insertAtHead(T data) {
 		/* TODO: Implement this method */
+        ListNode<T> newNode = new ListNode<>(data);
 
             //TODO: Finish implementing this method
-            if (head == null) { // first node in the list
-                ListNode<T> insertNode = new ListNode<T>(data); // node to insert
-
-                //insertNode.next = TODO: How do we make the node point back to the list? Where should it point?
-                insertNode.next = head;
-                // TODO: How do we make the list point to the new node?
-                head.next = insertNode;
-                //head = insertNode;
-            }
-            else if (size == 1){  // there is only one node in the list
-                ListNode<T> insertNode = new ListNode<T>(data); // node to insert
-                //head.next = //TODO: make list point to new node
-                insertNode.next = insertNode;
-                //head = //TODO: upadate head to point to the new node
-                head.next = insertNode;
-            }
-            else { // general case
-                ListNode<T> insertNode = new ListNode<T>(data); // node to insert
-                // find last node in list that points to head
-                ListNode<T> temp = head;
-                while (temp.next != head)
-                    temp = temp.next;
-                temp.next = insertNode; // TODO: make list point to new node
-                head.next = insertNode; //TODO: upadate head to point to the new node
+            if(size == 0) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                newNode.next = head;
+                head.prev = newNode;
+                head = newNode;
             }
             size++;
 
@@ -106,9 +94,19 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public void insertAt(int index, T data) {
 		/* TODO: Implement this method */
+        ListNode<T> newNode = new ListNode<>(data);
         if(size == 0){
-            insertAtTail(data);
+            head = newNode;
+            tail = newNode;
+        } else {
+            for(int i = 0; i < index; i++){
+                head = head.next;
+
+            }
+            head.next = newNode;
+            newNode.prev = head;
         }
+        size++;
 
 	}
 	
@@ -117,45 +115,64 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public void insert(ListIterator<T> it, T data) {
 		/* TODO: Implement this method */
+        ListNode<T> newNode = new ListNode<>(data);
 
-        it.curNode = it.curNode.next;
+
 
 	}
-	
-	
-	
+
 	public T removeAtTail(){
 		/* TODO: Implement this method */
-        if(tail == null){
-            return null;
-        } else if (size == 1){
+//        if(tail == null){
+//            return null;
+//        } else if (size == 1){
+//
+//        } else {
+//            T prevValue = tail.prev.getData();
+//            T nextValue = tail.next.getData();
+//            //tail = tail.next;
+//            tail.next.prev = tail.prev;
+//            tail.next = tail.next.next;
+//        }
+//		return null;
 
+        if(size == 0){
+            return null;
         } else {
-            T prevValue = tail.prev.getData();
-            T nextValue = tail.next.getData();
-            //tail = tail.next;
-            tail.next.prev = tail.prev;
-            tail.next = tail.next.next;
+            tail = tail.prev;
+            tail.next.prev = null;
+            tail.next = null;
+            size--;
+            return tail.getData();
         }
-		return null;
+
 	}
 	
 	public T removeAtHead(){
 		/* TODO: Implement this method */
-        if(tail == null){
+//        if(tail == null){
+//            return null;
+//        } else if (size == 1){
+//
+//        } else {
+//            T prevValue = head.prev.getData();
+//            T nextValue = head.next.getData();
+//            head.next = head.next.next;
+//            head.prev = head.prev.prev;
+//            head = head.next;
+//            head.prev.next = head;
+//
+//        }
+//		return null;
+        if(size == 0){
             return null;
-        } else if (size == 1){
-
         } else {
-            T prevValue = head.prev.getData();
-            T nextValue = head.next.getData();
-            head.next = head.next.next;
-            head.prev = head.prev.prev;
             head = head.next;
-            head.prev.next = head;
-
+            head.prev = null;
+            head.prev.next = null;
+            size--;
+            return head.getData();
         }
-		return null;
 	}
 	
 	/**
@@ -181,16 +198,14 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public int find(T data) {
         /* TODO: Implement this method */
+        ListNode<T> curr = head;
         for(int i = 0; i < size; i++){
-            if (head.getData().equals(data)){
+            if (curr.getData().equals(data)){
                 return i;
             }
-            head = head.next;
+            curr = curr.next;
         }
-
         return -1;
-
-
 
 	}
 	
@@ -201,15 +216,18 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public T get(int index) { 
 		/* TODO: Implement this method */
-        if(index < 0 || index >= size || (head == null && tail == null)) {
+        if(index < 0 || index >= size) {
             return null;
-        } 
-        
+        }
+        if(size == 0){
+            return null;
+        }
+
         ListNode<T> temp = head;
         for(int i = 0; i < index; i++){
             temp = temp.next;
         }
-        
+
         return temp.getData();
 	}
 	
