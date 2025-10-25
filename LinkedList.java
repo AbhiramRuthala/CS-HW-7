@@ -98,13 +98,27 @@ public class LinkedList<T> implements SimpleList<T>{
         if(size == 0){
             head = newNode;
             tail = newNode;
+        } else if (index == 0){
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }else if (index == size) {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
         } else {
-            for(int i = 0; i < index; i++){
-                head = head.next;
 
+            ListNode<T> current = head;
+            if(index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("Index out of bounds.");
+            } else {
+                for (int i = 0; i < index; i++) {
+                    current = current.next;
+
+                }
+                current.next = newNode;
+                newNode.prev = current;
             }
-            head.next = newNode;
-            newNode.prev = head;
         }
         size++;
 
@@ -116,6 +130,21 @@ public class LinkedList<T> implements SimpleList<T>{
 	public void insert(ListIterator<T> it, T data) {
 		/* TODO: Implement this method */
         ListNode<T> newNode = new ListNode<>(data);
+
+        if(it.curNode == head) {
+            newNode.next = head;
+            head = newNode;
+        } else if (it.curNode == tail) {
+            newNode.prev = tail;
+            tail.next = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = it.curNode.next;
+            it.curNode.next.prev = newNode;
+            newNode.prev = it.curNode;
+            it.curNode.next = newNode;
+        }
+        size++;
 
 
 
@@ -135,15 +164,19 @@ public class LinkedList<T> implements SimpleList<T>{
 //            tail.next = tail.next.next;
 //        }
 //		return null;
+        T newdata = tail.getData();
 
         if(size == 0){
             return null;
         } else {
             tail = tail.prev;
-            tail.next.prev = null;
-            tail.next = null;
+            if(tail == null) {
+                head = null;
+            } else {
+                tail.next = null;
+            }
             size--;
-            return tail.getData();
+            return newdata;
         }
 
 	}
@@ -164,14 +197,19 @@ public class LinkedList<T> implements SimpleList<T>{
 //
 //        }
 //		return null;
+        T lostData = head.getData();
+
         if(size == 0){
             return null;
         } else {
             head = head.next;
-            head.prev = null;
-            head.prev.next = null;
+            if(head == null) {
+                tail = null;
+            } else {
+                head.prev = null;
+            }
             size--;
-            return head.getData();
+            return lostData;
         }
 	}
 	
@@ -181,12 +219,28 @@ public class LinkedList<T> implements SimpleList<T>{
 	 */
 	public T remove(ListIterator<T> it) {
 		/* TODO: Implement this method */
+        if(it.curNode == null) {
+            return null;
+        }
+        if(it.curNode == head) {
+            it.curNode.prev.next = null;
+            it.curNode.next.prev = null;
+            it.curNode = null;
+            head = head.next;
+        } else if (it.curNode == tail) {
+            it.curNode.prev.next = null;
+            tail = tail.prev;
+        } else {
+            it.curNode.prev.next = it.curNode.next;
+            it.curNode.next.prev = it.curNode.prev;
+        }
+        size--;
 
-        T sense = head.getData();
-        it.curNode.prev.next = it.curNode.next;
-
-//        T sense = it.value();
-        it.curNode = it.curNode.next;
+//        T sense = head.getData();
+//        it.curNode.prev.next = it.curNode.next;
+//
+////        T sense = it.value();
+//        it.curNode = it.curNode.next;
 
 		return null;
 	}
@@ -224,6 +278,11 @@ public class LinkedList<T> implements SimpleList<T>{
         }
 
         ListNode<T> temp = head;
+        if(temp == null) {
+            return null;
+        }
+
+
         for(int i = 0; i < index; i++){
             temp = temp.next;
         }
