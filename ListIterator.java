@@ -1,3 +1,7 @@
+//Name: Abhiram Ruthala
+//Email: kas4kj@virginia.edu
+//HW = CS HW 7
+//Sources used: Google AI Mode, ChatGPT 5, https://www2.lawrence.edu/fast/GREGGJ/CMSC270/linked/iterators.html#:~:text=The%20iterator%20for%20the%20list,the%20iterator%20to%20point%20to.
 
 package list;
 
