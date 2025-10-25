@@ -1,0 +1,76 @@
+package queue;
+
+import list.LinkedList;
+
+/**
+ * A Linked-List based Queue
+ * @param <T>
+ */
+public class Queue<T> implements IQueue<T>{
+	private LinkedList<T> list;
+	/**
+	 * Constructor: Initialize the inner list 
+	 */
+	public Queue(){
+		/* TODO: Implement this method */
+        this.list = new LinkedList<>();
+	}
+	
+	/**
+	 * Return the size by invoking the size of the list
+	 */
+	public int size() { 
+		/* TODO: Implement this method */
+        if (list.size() > 0) {
+            return list.size();
+        } else {
+            return 0;
+        }
+	}
+	
+	/**
+	 * Simply add the data to the tail of the linked list
+	 */
+	public void enqueue(T data) {
+		/* TODO: Implement this method */ 
+		/* Hint: Which method in LinkedList.java already accomplishes this? */
+        list.insertAtTail(data);
+	}
+	
+	/**
+	 * Simply remove data from the head of the list, throw exception if list is empty.
+	 */
+	public T dequeue() throws EmptyQueueException {		
+		/* TODO: Implement this method */  
+		/* Hint: Which method in LinkedList.java already accomplishes this? */ 
+		/* What should you do if the queue is empty? */
+        if(list.size() > 0) {
+            list.removeAtHead();
+            return list.get(list.size()-(list.size()-1));
+        } else if (list.size() == 0) {
+            throw new EmptyQueueException("It's an empty queue. There are no parameters initialized.");
+        } else {
+            return null;
+        }
+	}
+
+	/**
+	 * Simply return the value from the head of the list, list should remain unchanged 
+         * throw exception if list is empty.
+	 */
+	public T peek() throws EmptyQueueException {		
+		/* TODO: Implement this method */  
+		/* Hint: Which method in LinkedList.java already accomplishes this? */ 
+		/* What should you do if the queue is empty? */
+
+        if(list.size() > 0) {
+//            list.find(list.removeAtHead());
+            list.get(list.size()-1);
+            return list.get(list.size()-1);
+        } else if (list.size() == 0) {
+            throw new EmptyQueueException("It's an empty queue. There are no parameters initialized.");
+        } else {
+            return null;
+        }
+	}
+}
