@@ -34,7 +34,11 @@ public class Queue<T> implements IQueue<T>{
 	public void enqueue(T data) {
 		/* TODO: Implement this method */ 
 		/* Hint: Which method in LinkedList.java already accomplishes this? */
-        list.insertAtTail(data);
+        if(list.size() > 0) {
+            list.insertAtTail(data);
+        } else {
+            return;
+        }
 	}
 	
 	/**
@@ -45,8 +49,8 @@ public class Queue<T> implements IQueue<T>{
 		/* Hint: Which method in LinkedList.java already accomplishes this? */ 
 		/* What should you do if the queue is empty? */
         if(list.size() > 0) {
-            list.removeAtHead();
-            return list.get(list.size()-(list.size()-1));
+            T sense = list.removeAtHead();
+            return sense;
         } else if (list.size() == 0) {
             throw new EmptyQueueException("It's an empty queue. There are no parameters initialized.");
         } else {
@@ -65,8 +69,8 @@ public class Queue<T> implements IQueue<T>{
 
         if(list.size() > 0) {
 //            list.find(list.removeAtHead());
-            list.get(list.size()-1);
-            return list.get(list.size()-1);
+            list.get(0);
+            return list.get(0);
         } else if (list.size() == 0) {
             throw new EmptyQueueException("It's an empty queue. There are no parameters initialized.");
         } else {
