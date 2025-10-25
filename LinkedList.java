@@ -5,7 +5,7 @@
 package list;
 
 ///**
-// * 
+// *
 // * A custom built linked list
 // * T here is the type the list stores
 // */
@@ -203,10 +203,14 @@ public class LinkedList<T> implements SimpleList<T>{
 		/* TODO: Implement this method */
         if(index < 0 || index >= size || (head == null && tail == null)) {
             return null;
-        } else {
-            return LinkedList.this.get(index);
+        } 
+        
+        ListNode<T> temp = head;
+        for(int i = 0; i < index; i++){
+            temp = temp.next;
         }
-
+        
+        return temp.getData();
 	}
 	
 	/**
@@ -231,28 +235,31 @@ public class LinkedList<T> implements SimpleList<T>{
 	/* Return iterators at front and end of list */
 	public ListIterator<T> front(){ 
 		/* TODO: Implement this method */
-        if(size == 0){
+        if(size == 0) {
             return null;
-
-        } else if(size == 1){
-            ListIterator<T> sense = (ListIterator<T>) head.getData();
-            return sense;
+        } else {
+            return new ListIterator<>(head);
         }
+//        } else if(size == 1){
+//            ListIterator<T> sense = (ListIterator<T>) head.getData();
+//            return sense;
+//        }
 
-		return null;
 	}
 
 	public ListIterator<T> back(){
 		/* TODO: Implement this method */
-        if(size == 0){
+        if(size == 0) {
             return null;
 
-        } else if(size == 1){
-            ListIterator<T> sense = (ListIterator<T>) tail.getData();
-            return sense;
+        } else {
+            return new ListIterator<>(tail);
         }
+//        } else if(size == 1){
+//            ListIterator<T> sense = (ListIterator<T>) tail.getData();
+//            return sense;
+//        }
 
-        return null;
 
 	}
 	
